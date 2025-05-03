@@ -2,7 +2,6 @@ import streamlit as st
 import requests
 import pandas as pd
 from io import BytesIO
-
 LOGO_URL_LARGE = "https://streamlit.io/images/brand/streamlit-mark-color.png" 
 st.set_page_config(page_title="Consulta CNPJ", layout="wide")
 st.title("Consulta de Dados via CNPJ")
@@ -39,23 +38,26 @@ if consultar and cnpj_input:
             st.error("Erro ao consultar o CNPJ. Verifique se está correto.")
         else:
             dados = resposta.json()
+            # Tratamento seguro do campo 'simples'
+            simples = dados.get('simples') or {}
 
             dados_empresa = {
                 'Razão Social': dados.get('razao_social'),
                 'Nome Fantasia': dados.get('nome_fantasia'),
-                'Natureza Jurídica': dados['natureza_juridica']['descricao'],
-                'Porte': dados['porte']['descricao'],
-                'Capital Social': dados['capital_social'],
-                'Situação Cadastral': dados['estabelecimento']['situacao_cadastral'],
-                'Simples Nacional': dados['simples']['simples'],
-                'Exclusão do MEI': dados['simples']['data_exclusao_mei'],
-                'Exclusão do Simples': dados['simples']['data_exclusao_simples'],
-                'Atividade Principal': dados['estabelecimento']['atividade_principal']['descricao'],
-                'CNAE Principal': dados['estabelecimento']['atividade_principal']['id'],
-                'Cidade': dados['estabelecimento']['cidade']['nome'],
-                'CEP': dados['estabelecimento']['cep'],
-                'Email': dados['estabelecimento']['email'],
+                'Natureza Jurídica': dados.get('natureza_juridica', {}).get('descricao'),
+                'Porte': dados.get('porte', {}).get('descricao'),
+                'Capital Social': dados.get('capital_social'),
+                'Situação Cadastral': dados.get('estabelecimento', {}).get('situacao_cadastral'),
+                'Simples Nacional': simples.get('simples'),
+                'Exclusão do MEI': simples.get('data_exclusao_mei'),
+                'Exclusão do Simples': simples.get('data_exclusao_simples'),
+                'Atividade Principal': dados.get('estabelecimento', {}).get('atividade_principal', {}).get('descricao'),
+                'CNAE Principal': dados.get('estabelecimento', {}).get('atividade_principal', {}).get('id'),
+                'Cidade': dados.get('estabelecimento', {}).get('cidade', {}).get('nome'),
+                'CEP': dados.get('estabelecimento', {}).get('cep'),
+                'Email': dados.get('estabelecimento', {}).get('email'),
             }
+
             df_empresa = pd.DataFrame([dados_empresa])
             
             inscricoes = dados['estabelecimento']['inscricoes_estaduais']
