@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 from io import BytesIO
-import openýxl
+
 LOGO_URL_LARGE = "https://streamlit.io/images/brand/streamlit-mark-color.png" 
 st.set_page_config(page_title="Consulta CNPJ", layout="wide")
 st.title("Consulta de Dados via CNPJ")
