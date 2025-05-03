@@ -101,7 +101,7 @@ if consultar and cnpj_input:
             st.dataframe(df_socios)
 
             buffer = BytesIO()
-            with pd.ExcelWriter(buffer, engine='openpyxl') as writer::
+            with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
                 df_empresa.to_excel(writer, sheet_name='Empresa', index=False)
                 df_atividades_secundarias.to_excel(writer, sheet_name='Atividades Secundárias', index=False)
                 df_socios.to_excel(writer, sheet_name='Sócios', index=False)
