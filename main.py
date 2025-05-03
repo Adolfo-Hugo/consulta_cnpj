@@ -38,12 +38,12 @@ if consultar and cnpj_input:
             st.error("Erro ao consultar o CNPJ. Verifique se está correto.")
         else:
             dados = resposta.json()
-            # Tratamento seguro do campo 'simples'
+       
             simples = dados.get('simples') or {}
 
             dados_empresa = {
                 'Razão Social': dados.get('razao_social'),
-                'Nome Fantasia': dados.get('nome_fantasia'),
+                'Nome Fantasia': dados.get('estabelecimento', {}).get('nome_fantasia'),
                 'Natureza Jurídica': dados.get('natureza_juridica', {}).get('descricao'),
                 'Porte': dados.get('porte', {}).get('descricao'),
                 'Capital Social': dados.get('capital_social'),
