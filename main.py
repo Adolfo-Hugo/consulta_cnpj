@@ -2,6 +2,7 @@ import streamlit as st
 import requests
 import pandas as pd
 from io import BytesIO
+import openýxl
 LOGO_URL_LARGE = "https://streamlit.io/images/brand/streamlit-mark-color.png" 
 st.set_page_config(page_title="Consulta CNPJ", layout="wide")
 st.title("Consulta de Dados via CNPJ")
@@ -100,7 +101,7 @@ if consultar and cnpj_input:
             st.dataframe(df_socios)
 
             buffer = BytesIO()
-            with pd.ExcelWriter(buffer, engine='openpyxl') as writer:
+            with pd.ExcelWriter(buffer, engine='openpyxl') as writer::
                 df_empresa.to_excel(writer, sheet_name='Empresa', index=False)
                 df_atividades_secundarias.to_excel(writer, sheet_name='Atividades Secundárias', index=False)
                 df_socios.to_excel(writer, sheet_name='Sócios', index=False)
